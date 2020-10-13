@@ -37,13 +37,12 @@ public class Hotel {
         });
 
         // book best matching room
+        // best matching room is room with the least available days
         if (!availableRooms.isEmpty()) {
             // Ascending sort available rooms by number of available days
             availableRooms.sort(Comparator.comparingInt(Room::getAvailableDays));
-            for (Room room : availableRooms) {
-                if (room.bookRoom(guest, startDay, endDay)) {
-                    return ACCEPT;
-                }
+            if (availableRooms.stream().findFirst().get().bookRoom(guest, startDay, endDay)) {
+                return ACCEPT;
             }
         }
         return DECLINE;
